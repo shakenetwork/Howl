@@ -23,3 +23,6 @@ $whatweb --no-errors -t 255 10.11.1.1/16 --url-suffix=':8080' --log-json=10.11.j
 $python3 whatweb2es.py -f 10.11.json
 ```
 
+## 利用 kibana 进行查询
+
+![](http://obfxuk8r6.bkt.clouddn.com/Howl.png)
