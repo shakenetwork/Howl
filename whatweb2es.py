@@ -18,7 +18,7 @@ def save2es(target, esindex):
         index=esindex,
         doc_type="detail",
         id=int(
-            str(int(ipaddress.IPv4Address(line['plugins']['IP']['string'][0])))
+            str(int(ipaddress.IPv4Address(target['plugins']['IP']['string'][0])))
             + target['port']),
         body=target)
     print(target)
