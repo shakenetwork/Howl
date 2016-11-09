@@ -7,6 +7,8 @@ import ipaddress
 
 
 def save2es(target, esindex):
+    if not target:
+        return
     parse_target = target['target'].split(':')
     if len(parse_target) > 2:
         target['port'] = parse_target[-1].split('/')[0]
@@ -25,7 +27,7 @@ def save2es(target, esindex):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='import whatweb log to Elasticsearch, by:orange')
-    parser.add_argument('-f', help='log file')
+    parser.add_argument('-f', help='log file', default='/tmp/whatweb_tmp.json')
     parser.add_argument('-s', help='Elasticsearch Server', default='127.0.0.1')
     parser.add_argument('-i', help='Elasticsearch Index', default='whatweb')
     args = parser.parse_args()
