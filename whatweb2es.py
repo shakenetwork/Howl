@@ -6,7 +6,6 @@ import ipaddress
 
 
 def save2es(target, esindex):
-<<<<<<< HEAD
     try:
         parse_target = target['target'].split(':')
         if len(parse_target) > 2:
@@ -25,23 +24,6 @@ def save2es(target, esindex):
         print(target)
     except:
         pass
-=======
-    if not target:
-        return
-    parse_target = target['target'].split(':')
-    if len(parse_target) > 2:
-        target['port'] = parse_target[-1].split('/')[0]
-    else:
-        target['port'] = '80'
-    es.index(
-        index=esindex,
-        doc_type="detail",
-        id=int(
-            str(int(ipaddress.IPv4Address(target['plugins']['IP']['string'][0])))
-            + target['port']),
-        body=target)
-    print(target)
->>>>>>> 2b8654621600648a8e0427c68bc5ceb299dfaf0f
 
 
 if __name__ == '__main__':
