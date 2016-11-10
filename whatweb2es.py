@@ -2,26 +2,28 @@ from elasticsearch import Elasticsearch
 from multiprocessing import Pool
 import argparse
 import json
-import time
 import ipaddress
 
 
 def save2es(target, esindex):
-    if not target:
-        return
-    parse_target = target['target'].split(':')
-    if len(parse_target) > 2:
-        target['port'] = parse_target[-1].split('/')[0]
-    else:
-        target['port'] = '80'
-    es.index(
-        index=esindex,
-        doc_type="detail",
-        id=int(
-            str(int(ipaddress.IPv4Address(line['plugins']['IP']['string'][0])))
-            + target['port']),
-        body=target)
-    print(target)
+    try:
+        parse_target = target['target'].split(':')
+        if len(parse_target) > 2:
+            target['port'] = parse_target[-1].split('/')[0]
+        else:
+            target['port'] = '80'
+        es.index(
+            index=esindex,
+            doc_type="detail",
+            id=int(
+                str(
+                    int(
+                        ipaddress.IPv4Address(line['plugins']['IP']['string'][
+                            0]))) + target['port']),
+            body=target)
+        print(target)
+    except:
+        pass
 
 
 if __name__ == '__main__':
