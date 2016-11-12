@@ -1,5 +1,5 @@
 from celery import Celery, platforms
-from config import es
+from config import es, whatwebdb
 import os
 import json
 import ipaddress
@@ -8,7 +8,10 @@ app = Celery('tasks', broker='redis://localhost')
 
 
 @app.task
-def add2whatweb(logfile, target, port):
+def add2whatweb(target, port):
+    whatwebdb.sadd('scaned', '{}_{}'.format(target,port))
+    whatwebdb.incr('scanning')
+    logfile='tmp/{}_{}.json'.format(target.replace('/','-'),port)
     if os.path.exists(logfile):
         os.system('rm {}'.format(logfile))
     os.system("whatweb --no-errors -t 255 {} --url-suffix=':{}' --log-json={}".
@@ -17,6 +20,7 @@ def add2whatweb(logfile, target, port):
         lines = json.load(logf)
         for line in lines:
             save2es.delay(line)
+    whatwebdb.decr('scanning')
 
 
 @app.task
