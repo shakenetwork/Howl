@@ -3,15 +3,16 @@
 from flask import Flask, request, redirect
 from flask_restful import Resource, Api, reqparse
 from flask_restful.utils import cors
+from flask_cors import CORS, cross_origin
 from config import es, whatwebdb
 from tasks import *
 
 app = Flask(__name__)
+CORS(app)
 howlapi = Api(app)
 
 
 class SubdomainsList(Resource):
-    @cors.crossdomain(allow_origin='*')
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('limit', type=int, help='limit必须为int',default=1)
@@ -28,7 +29,6 @@ class SubdomainsList(Resource):
 
 
 class HowlList(Resource):
-    @cors.crossdomain(allow_origin='*')
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('limit', type=int, help='limit必须为int',default=100)
@@ -42,7 +42,6 @@ class HowlList(Resource):
             return {'count': len(hits), 'data': hits}
         else:
             return []
-    @cors.crossdomain(allow_origin='*')
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('netmask', type=int, help='netmask必须为int',default=24)

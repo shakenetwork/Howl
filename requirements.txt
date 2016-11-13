@@ -5,6 +5,7 @@ celery==4.0.0
 click==6.6
 elasticsearch==5.0.1
 Flask==0.11.1
+Flask-Cors==3.0.2
 Flask-RESTful==0.3.5
 ipaddress==1.0.17
 itsdangerous==0.24
