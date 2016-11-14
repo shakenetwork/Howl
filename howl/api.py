@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 from flask_restful import Resource, Api, reqparse
 from flask_restful.utils import cors
 from flask_cors import CORS, cross_origin
@@ -65,3 +65,7 @@ class HowlList(Resource):
 
 howlapi.add_resource(HowlList, '/api/whatweb')
 howlapi.add_resource(SubdomainsList, '/api/subdomains')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
