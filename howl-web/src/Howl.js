@@ -111,11 +111,6 @@ render() {
                 </Row>
             </div>
             <Row>
-                <Col span="2">
-
-                </Col>
-
-                <Col span="20">
                     <Table
                         bordered
                         columns={columns}
@@ -127,10 +122,6 @@ render() {
                         title={() => `共${this.state.pagination.total}条记录`}
                         footer={() => `共${this.state.pagination.total}条记录`}
                         />
-                </Col>
-                <Col span="2">
-
-                </Col>
             </Row>
         </div>
     );
