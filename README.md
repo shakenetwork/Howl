@@ -1,5 +1,9 @@
 ## 网络设备 web 服务指纹扫描与检索
-
+![GitHub issues](https://img.shields.io/github/issues/0xbug/Howl.svg)
+![GitHub forks](https://img.shields.io/github/forks/0xbug/Howl.svg)
+![GitHub stars](https://img.shields.io/github/stars/0xbug/Howl.svg)
+![Python 3.x](https://img.shields.io/badge/python-3.x-yellow.svg)
+![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)
 ### 实现思路:
 
 利用 flask 开放 api，通过调用 api 来实现添加任务或数据检索;利用 celery 来进行异步调用 whatweb 来进行扫描，然后保存数据到 elasticsearch
