@@ -30,6 +30,7 @@ $ pip install -r requirements.txt
 
 ```
 $ cd howl
+$ celery -A tasks worker --loglevel=info
 $ python run.py 端口
 ```
 
