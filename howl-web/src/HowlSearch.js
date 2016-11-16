@@ -3,14 +3,13 @@
  */
 
 import React from 'react';
-import {Button, Input, AutoComplete} from 'antd';
+import { Button, Input } from 'antd';
 import classNames from 'classnames';
 
 const InputGroup = Input.Group;
 const SearchInput = React.createClass({
     getInitialState() {
         return {
-            dataSource: [],
             value: '',
             focus: false,
         };
@@ -44,15 +43,17 @@ const SearchInput = React.createClass({
             <div className="ant-search-input-wrapper" style={style}>
                 <InputGroup className={searchCls}>
                     <Input placeholder={placeholder} value={this.state.value} onChange={this.handleInputChange}
-                           onFocus={this.handleFocusBlur} onBlur={this.handleFocusBlur} onPressEnter={this.handleSearch}
-                    />
+                        onFocus={this.handleFocusBlur} onBlur={this.handleFocusBlur} onPressEnter={this.handleSearch}
+                        />
+
                     <div className="ant-input-group-wrap">
-                        <Button icon="search" className={btnCls} size={size} onClick={this.handleSearch}/>
+                        <Button icon="search" className={btnCls} size={size} onClick={this.handleSearch} />
                     </div>
                 </InputGroup>
+
             </div>
         );
     },
 });
 
-export default  SearchInput;
+export default SearchInput;

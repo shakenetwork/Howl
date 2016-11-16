@@ -1,20 +1,23 @@
 import SearchInput from './HowlSearch';
 import reqwest from 'reqwest';
 import React from 'react';
-import { Table, message } from 'antd';
+import { Table, message, Card, BackTop } from 'antd';
 import { Col, Row } from 'antd';
+
 import 'antd/dist/antd.css';
 
+import { Radio } from 'antd';
+const RadioGroup = Radio.Group;
 const columns = [{
     title: 'Traget',
     dataIndex: 'target',
-    render:target=>(<a href={target} target='_blank'>{target}</a>)
+    render: target => (<a href={target} target='_blank'>{target}</a>)
 }, {
     title: 'Country',
     render: (target) => (
         <span>{target.plugins.Country ? target.plugins.Country.string.toString() : ''}
 
-</span>)
+        </span>)
 }, {
     title: 'Code',
     dataIndex: 'http_status',
@@ -30,7 +33,7 @@ const columns = [{
     render: (target) => (
         <span>{target.plugins.HTTPServer ? target.plugins.HTTPServer.string.toString() : ''}
 
-</span>)
+        </span>)
 }
 ];
 const Result = React.createClass({
@@ -90,39 +93,51 @@ handleSearch(filter){
 componentDidMount() {
     this.fetch();
 },
+onChange(e) {
+    console.log('radio checked', e.target.value);
+    this.setState({
+        value: e.target.value,
+    });
+},
 render() {
     return (
         <div style={{ background: '#FFF', padding: '40px' }}>
-            <div style={{ background: '#FFF', padding: '30px' }}>
-                <Row>
-                    <Col span="4">
-                    </Col>
-                    <Col span="16">
-                            <SearchInput placeholder='Apache || kibana || index of || Login '
+            <BackTop />
+                <div style={{ background: '#FFF', padding: '30px' }}>
+                    <Row align='middle' gutter={16} >
+                        <Col span={6}>
+                            <RadioGroup defaultValue={1} onChange={this.onChange} value={this.state.value}>
+                                <Radio key="vuldb" value={1}>漏洞</Radio>
+                                <Radio key="whatweb" defaultChecked value={2}>web指纹库</Radio>
+                            </RadioGroup>
+                        </Col>
+                        <Col span={6}>
+                            <SearchInput placeholder='管理 '
                                 onSearch={filter => {
                                     this.handleSearch(filter);
                                 } } style={{ width: 400 }}
                                 />
-                    </Col>
-
-                    <Col span="4">
-
+                        </Col>
+                    </Row>
+                </div>
+                
+            <Card >
+                <Row align="middle">
+                    <Col>
+                        <Table
+                            bordered={false}
+                            columns={columns}
+                            rowKey='target'
+                            dataSource={this.state.data}
+                            pagination={this.state.pagination}
+                            loading={this.state.loading}
+                            onChange={this.handleTableChange}
+                            title={() => `共${this.state.pagination.total}条记录`}
+                            footer={() => `共${this.state.pagination.total}条记录`}
+                            />
                     </Col>
                 </Row>
-            </div>
-            <Row>
-                    <Table
-                        bordered
-                        columns={columns}
-                        rowKey='target'
-                        dataSource={this.state.data}
-                        pagination={this.state.pagination}
-                        loading={this.state.loading}
-                        onChange={this.handleTableChange}
-                        title={() => `共${this.state.pagination.total}条记录`}
-                        footer={() => `共${this.state.pagination.total}条记录`}
-                        />
-            </Row>
+            </Card>
         </div>
     );
 },
