@@ -5,10 +5,10 @@
 # web site for more information on licensing and terms of use.
 # http://www.morningstarsecurity.com/research/whatweb
 #
-Plugin.define "Phabricator" do
+Plugin.define "phpMiniAdmin" do
 author "orange"
-description "Phabricator is an integrated set of powerful tools to help companies build higher quality software."
-website "https://www.phacility.com/"
+description "phpminiadmin - extremely lightweight alternative to heavy phpMyAdmin for quick and easy access MySQL databases."
+website "http://phpminiadmin.sourceforge.net/"
 
 # This is the matches array. 
 # Each match is treated independently.
@@ -17,12 +17,14 @@ website "https://www.phacility.com/"
 matches [
 
 # This searches for a text string.
-{ :text => '<title>Login to Phabricator<\/title>' },
+{ :text => '<title>phpMiniAdmin<\/title>' },
 
 # This searches for a regular expression. Note that the slashes are escaped.
-{ :regexp => /<title>Login to Phabricator<\/title>/ },
+{ :regexp => /<title>phpMiniAdmin<\/title>/ },
 
 # This extracts the version of Generic CMS from the Mega generator tag.
+{ :version => /target="_blank"><b>(.*?)<\/b><\/a>/ }, 
+
 ] 
 
 end
