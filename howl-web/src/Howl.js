@@ -3,12 +3,21 @@ import reqwest from 'reqwest';
 import React from 'react';
 import { Table, message, Card, BackTop } from 'antd';
 import { Col, Row } from 'antd';
-
 import 'antd/dist/antd.css';
-
 import { Radio } from 'antd';
+
 const RadioGroup = Radio.Group;
-const columns = [{
+
+const vuldbColumns = [{
+    title: 'Title',
+    render: (vul) =>(
+        <span>
+        <a href={vul.reference} target='_blank'>{vul.title}</a>
+        </span>
+    )
+}]
+
+const whatwebColumns = [{
     title: 'Traget',
     dataIndex: 'target',
     render: target => (<a href={target} target='_blank'>{target}</a>)
@@ -42,7 +51,9 @@ const Result = React.createClass({
             data: [],
             pagination: {},
             loading: false,
-            url: this.props.apiurl
+            columns: whatwebColumns,
+            url: this.props.apiurl,
+            api: this.props.apiurl.whatwebApi
         };
     },
 
@@ -87,17 +98,24 @@ type: 'json',
     },
 handleSearch(filter){
     this.setState({ loading: true });
-    this.setState({ url: this.props.filterurl + filter }, () => this.fetch());
+    this.setState({ url: this.state.api + filter }, () => this.fetch());
     this.setState({ loading: false });
 },
 componentDidMount() {
     this.fetch();
 },
 onChange(e) {
-    console.log('radio checked', e.target.value);
-    this.setState({
-        value: e.target.value,
-    });
+    
+    e.target.value === 1 ? this.setState({
+        api: this.props.apiurl.vuldbApi,
+        columns:vuldbColumns,
+        value: e.target.value
+    }) : this.setState({
+        api: this.props.apiurl.whatwebApi,
+        columns:whatwebColumns,
+        value: e.target.value
+    })
+    console.log('radio checked', this.state.api);
 },
 render() {
     return (
@@ -107,7 +125,7 @@ render() {
                     <Row align='middle' gutter={16} >
                         <Col span={6}>
                             <RadioGroup defaultValue={1} onChange={this.onChange} value={this.state.value}>
-                                <Radio key="vuldb" value={1}>漏洞</Radio>
+                                <Radio key="vuldb" value={1}>漏洞库</Radio>
                                 <Radio key="whatweb" defaultChecked value={2}>web指纹库</Radio>
                             </RadioGroup>
                         </Col>
@@ -126,7 +144,7 @@ render() {
                     <Col>
                         <Table
                             bordered={false}
-                            columns={columns}
+                            columns={this.state.columns}
                             rowKey='target'
                             dataSource={this.state.data}
                             pagination={this.state.pagination}

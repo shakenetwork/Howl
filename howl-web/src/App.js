@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Menu } from 'antd';
-
 import Result from './Howl';
-import whatwebApi from './ApiConfig';
+import Api from './ApiConfig';
 
 class App extends Component {
   render() {
@@ -23,7 +22,7 @@ class App extends Component {
           <div className="ant-layout-wrapper">
             <div className="ant-layout-container">
               <div style={{ height: 210 }}>
-                <Result apiurl={whatwebApi} filterurl={whatwebApi} />
+                <Result apiurl={Api} />
               </div>
             </div>
           </div>

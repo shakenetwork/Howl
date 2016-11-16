@@ -16,11 +16,11 @@ class VuldbList(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('limit', type=int, help='limit必须为int', default=1)
-        parser.add_argument('query', type=str, help='请输入有效域名')
+        parser.add_argument('q', type=str, help='请输入有效域名')
         args = parser.parse_args()
         s = es.search(
             index="vuldb",
-            q='title:{}'.format(args.query),
+            q='title:{}'.format(args.q),
             size=args.limit)
         if s['hits']['hits']:
             hits = []
@@ -35,11 +35,11 @@ class SubdomainsList(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('limit', type=int, help='limit必须为int', default=1)
-        parser.add_argument('domain', type=str, help='请输入有效域名')
+        parser.add_argument('q', type=str, help='请输入有效域名')
         args = parser.parse_args()
         s = es.search(
             index="subdomains",
-            q='domain:{}'.format(args.domain),
+            q='domain:{}'.format(args.q),
             size=args.limit)
         if s['hits']['hits']:
             hits = []
