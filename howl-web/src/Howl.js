@@ -4,19 +4,18 @@ import React from 'react';
 import { Table, message, Card, BackTop } from 'antd';
 import { Col, Row } from 'antd';
 import 'antd/dist/antd.css';
-import { Radio } from 'antd';
+import { Radio,Tag } from 'antd';
 
 const RadioGroup = Radio.Group;
 
 const vuldbColumns = [{
     title: 'Submit Time',
     dataIndex: 'time'
-
 }, {
     title: 'Name',
     render: (vul) => (
         <span>
-            <a href={vul.reference} target='_blank'>{vul.title}</a>
+            <a href={vul.reference} target='_blank'>{vul.title} <Tag color="#87d068">{vul.source}</Tag></a>
         </span>
     )
 }]
