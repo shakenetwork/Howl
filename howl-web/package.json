@@ -1,17 +1,17 @@
 {
   "name": "howl-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
   "dependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build&&cp build/static/js/*.js ../howl/static/js/&&cp build/static/css/*.css ../howl/static/css/&&cp build/index.html ../howl/templates/index.html",
+    "build": "react-scripts build&&rm -rf ../howl/static&&cp -R build/static ../howl/static&&cp build/index.html ../howl/templates/index.html",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
