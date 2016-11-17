@@ -11,6 +11,7 @@ const RadioGroup = Radio.Group;
 const vuldbColumns = [{
     title: 'Submit Time',
     dataIndex: 'time'
+
 }, {
     title: 'Name',
     render: (vul) => (
@@ -111,10 +112,12 @@ onChange(e) {
     
     e.target.value === 1 ? this.setState({
         api: this.props.apiurl.vuldbApi,
+        data:[],
         columns: vuldbColumns,
         value: e.target.value
     }) : this.setState({
         api: this.props.apiurl.whatwebApi,
+        data: [],
         columns: whatwebColumns,
         value: e.target.value
     })
