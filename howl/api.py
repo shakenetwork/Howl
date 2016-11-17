@@ -22,7 +22,7 @@ class VuldbList(Resource):
             index="vuldb",
             q='title:{}'.format(args.q),
             size=args.limit,
-            sort=[{'_id': 'desc'}]
+            sort=['_id']
             )
         if s['hits']['hits']:
             hits = []
@@ -42,9 +42,7 @@ class SubdomainsList(Resource):
         s = es.search(
             index="subdomains",
             q='domain:{}'.format(args.q),
-            size=args.limit,
-            sort=[{'_id': 'desc'}]
-            )
+            size=args.limit)
         if s['hits']['hits']:
             hits = []
             for hit in s['hits']['hits']:
@@ -60,7 +58,7 @@ class HowlList(Resource):
         parser.add_argument('limit', type=int, help='limit必须为int', default=100)
         parser.add_argument('q', type=str, help='请输入有效查询')
         args = parser.parse_args()
-        s = es.search(index="whatweb", q=args.q, size=args.limit,sort=[{'_id': 'desc'}])
+        s = es.search(index="whatweb", q=args.q, size=args.limit)
         if s['hits']['hits']:
             hits = []
             for hit in s['hits']['hits']:
