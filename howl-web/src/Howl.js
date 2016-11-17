@@ -9,10 +9,14 @@ import { Radio } from 'antd';
 const RadioGroup = Radio.Group;
 
 const vuldbColumns = [{
-    title: 'Title',
-    render: (vul) =>(
+    title: 'Submit Time',
+    dataIndex: 'time'
+
+}, {
+    title: 'Name',
+    render: (vul) => (
         <span>
-        <a href={vul.reference} target='_blank'>{vul.title}</a>
+            <a href={vul.reference} target='_blank'>{vul.title}</a>
         </span>
     )
 }]
@@ -108,11 +112,11 @@ onChange(e) {
     
     e.target.value === 1 ? this.setState({
         api: this.props.apiurl.vuldbApi,
-        columns:vuldbColumns,
+        columns: vuldbColumns,
         value: e.target.value
     }) : this.setState({
         api: this.props.apiurl.whatwebApi,
-        columns:whatwebColumns,
+        columns: whatwebColumns,
         value: e.target.value
     })
     console.log('radio checked', this.state.api);
@@ -121,24 +125,24 @@ render() {
     return (
         <div style={{ background: '#FFF', padding: '40px' }}>
             <BackTop />
-                <div style={{ background: '#FFF', padding: '30px' }}>
-                    <Row align='middle' gutter={16} >
-                        <Col span={6}>
-                            <RadioGroup defaultValue={1} onChange={this.onChange} value={this.state.value}>
-                                <Radio key="vuldb" value={1}>漏洞库</Radio>
-                                <Radio key="whatweb" defaultChecked value={2}>web指纹库</Radio>
-                            </RadioGroup>
-                        </Col>
-                        <Col span={6}>
-                            <SearchInput placeholder='管理 '
-                                onSearch={filter => {
-                                    this.handleSearch(filter);
-                                } } style={{ width: 400 }}
-                                />
-                        </Col>
-                    </Row>
-                </div>
-                
+            <div style={{ background: '#FFF', padding: '30px' }}>
+                <Row align='middle' gutter={16} >
+                    <Col span={6}>
+                        <RadioGroup defaultValue={1} onChange={this.onChange} value={this.state.value}>
+                            <Radio key="vuldb" value={1}>漏洞库</Radio>
+                            <Radio key="whatweb" defaultChecked value={2}>web指纹库</Radio>
+                        </RadioGroup>
+                    </Col>
+                    <Col span={6}>
+                        <SearchInput placeholder='管理 '
+                            onSearch={filter => {
+                                this.handleSearch(filter);
+                            } } style={{ width: 400 }}
+                            />
+                    </Col>
+                </Row>
+            </div>
+
             <Card >
                 <Row align="middle">
                     <Col>
