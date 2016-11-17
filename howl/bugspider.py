@@ -18,16 +18,24 @@ def spider(page):
     headers = {'User-Agent': generate_user_agent()}
     print('Fetching Page {}\n====================='.format(page))
     resp = get('{}={}'.format(seebug_url, page), headers=headers).text
-    bugs = re.findall(seebug_pattern, resp)
-    for bug in bugs:
-        title = bug.split('">')[1]
-        ssvid = bug.split('">')[0]
-        bugid = ssvid.split('-')[1]
-        es.index(index='vuldb', doc_type='vulnerabilities', id='ssvid-{}'.format(bugid),
-                 body={'title': title,
-                       'reference': seebug_baseurl + ssvid,
-                       'source': 'seebug'}
-                 )
+    b = resp.split('</tr>')[1:-1]
+    for each in b:
+        bugs = re.findall(seebug_pattern, each)
+        bugtime = re.findall('(\d+-\d+-\d+)', each)[0]
+        timestamp = time.mktime(time.strptime(bugtime, '%Y-%m-%d'))
+        for bug in bugs:
+            title = bug.split('">')[1]
+            ssvid = bug.split('">')[0]
+            bugid = ssvid.split('-')[1]
+            es.index(
+                index='vuldb',
+                doc_type='vulnerabilities',
+                id='ssvid-{}'.format(bugid),
+                timestamp=int(timestamp),
+                body={'title': title,
+                      'time': bugtime,
+                      'reference': seebug_baseurl + ssvid,
+                      'source': 'seebug'})
         print('{}\t{}'.format(title, ssvid))
 
 
@@ -37,7 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', help='to page', default=3)
     args = parser.parse_args()
     p = Pool(1)
-    for page in range(int(args.f), int(args.t)+1):
-        p.apply_async(spider, (page,))
+    for page in range(int(args.f), int(args.t) + 1):
+        p.apply_async(spider, (page, ))
     p.close()
     p.join()
