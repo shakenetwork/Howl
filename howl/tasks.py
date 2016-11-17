@@ -1,10 +1,11 @@
 from celery import Celery, platforms
+from celery.schedules import crontab
 from config import es, whatwebdb
 import os
 import json
 import ipaddress
 platforms.C_FORCE_ROOT = True
-app = Celery('tasks', broker='redis://localhost')
+app = Celery('tasks', broker='redis://localhost:6379/1')
 
 
 @app.task
