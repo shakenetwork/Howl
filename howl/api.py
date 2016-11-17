@@ -22,7 +22,7 @@ class VuldbList(Resource):
             index="vuldb",
             q='title:{}'.format(args.q),
             size=args.limit,
-            sort='_id'
+            sort=[{"_id":{"order":"desc","unmapped_type":"boolean"}}]
             )
         if s['hits']['hits']:
             hits = []
