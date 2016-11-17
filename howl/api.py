@@ -22,6 +22,7 @@ class VuldbList(Resource):
             index="vuldb",
             q='title:{}'.format(args.q),
             size=args.limit,
+            sort='time:desc'
             )
         if s['hits']['hits']:
             hits = []
