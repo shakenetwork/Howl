@@ -84,9 +84,11 @@ class HowlList(Resource):
             print(target)
             return {'code': 201}
         elif int(whatwebdb.get('scanning')) < 3:
+            whatwebdb.sadd('scaned', '{}_{}'.format(target,args.port))
             add2whatweb.delay(target, args.port)
             return {'code': 202}
         else:
+            whatwebdb.sadd('scaned', '{}_{}'.format(target,args.port))
             add2whatweb.apply_async(
                 (target,
                  args.port, ),

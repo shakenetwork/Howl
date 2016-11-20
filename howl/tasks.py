@@ -10,7 +10,6 @@ app = Celery('tasks', broker='redis://localhost:6379/1')
 
 @app.task
 def add2whatweb(target, port):
-    whatwebdb.sadd('scaned', '{}_{}'.format(target,port))
     whatwebdb.incr('scanning')
     logfile='tmp/{}_{}.json'.format(target.replace('/','-'),port)
     if os.path.exists(logfile):
