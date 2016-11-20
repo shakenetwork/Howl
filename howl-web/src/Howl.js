@@ -67,10 +67,10 @@ const Result = React.createClass({
         this.setState({
             pagination: pager,
         });
-        this.fetch({
-            page: pagination.current,
-            ...filters,
-        });
+        // this.fetch({
+        //     page: pagination.current,
+        //     ...filters,
+        // });
     },
 fetch(params = {}) {
     this.setState({ loading: true });

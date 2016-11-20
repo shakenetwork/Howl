@@ -3,7 +3,6 @@ import './App.css';
 import { Menu } from 'antd';
 import Result from './Howl';
 import Api from './ApiConfig';
-
 class App extends Component {
   render() {
     return (
