@@ -78,17 +78,16 @@ class HowlList(Resource):
         target = '{}/{}'.format(args.ip, args.netmask)
         if not whatwebdb.exists('scanning'):
             whatwebdb.set('scanning', 0)
-        if '{}_{}'.format(
-                target,
-                args.port).encode('ascii') in whatwebdb.smembers('scaned'):
+        target_port = '{}_{}'.format(target,args.port)
+        if  target_port in whatwebdb.smembers('scaned'):
             print(target)
             return {'code': 201}
         elif int(whatwebdb.get('scanning')) < 3:
-            whatwebdb.sadd('scaned', '{}_{}'.format(target,args.port))
+            whatwebdb.sadd('scaned', target_port)
             add2whatweb.delay(target, args.port)
             return {'code': 202}
         else:
-            whatwebdb.sadd('scaned', '{}_{}'.format(target,args.port))
+            whatwebdb.sadd('scaned', target_port)
             add2whatweb.apply_async(
                 (target,
                  args.port, ),

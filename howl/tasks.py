@@ -21,6 +21,8 @@ def add2whatweb(target, port):
         for line in lines:
             save2es.delay(line)
     whatwebdb.decr('scanning')
+    if os.path.exists(logfile):
+        os.system('rm {}'.format(logfile))
 
 
 @app.task

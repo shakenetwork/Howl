@@ -3,14 +3,13 @@ import requests
 
 
 def getip():
-    with open('tmp/ip.txt', 'r') as ipf:
+    with open('tmp/china_ip_list.txt', 'r') as ipf:
         for line in ipf.readlines():
-            ip = line.split('\t')
-            print('{}-{}'.format(ip[0], ip[1]))
+            ip = line.strip('\n').split('/')
             requests.post(
-                'http://127.0.0.1:9900/api/whatweb?netmask=16&ip={}&port=80'.
-                format(ip[0]))
-            time.sleep(3000)
+                'http://127.0.0.1:9900/api/whatweb?netmask={}&ip={}&port=80'.
+                format(ip[1],ip[0]))
+            time.sleep(10)
 
 
 if __name__ == '__main__':

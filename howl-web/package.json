@@ -3,11 +3,14 @@
   "version": "0.2.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.7.0"
+    "react-scripts": "0.8.0"
   },
   "dependencies": {
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0"
+    "antd": "^2.5.0",
+    "create-react-app": "^1.0.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "reqwest": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
