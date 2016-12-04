@@ -1,13 +1,8 @@
 import SearchInput from './HowlSearch';
 import reqwest from 'reqwest';
 import React from 'react';
-import {Table, message, Card, BackTop} from 'antd';
-import {Col, Row} from 'antd';
-import {Alert} from 'antd';
-import {Radio, Tag} from 'antd';
-
+import {Alert, Col, Table, message, Card, BackTop, Radio, Row, Tag} from 'antd';
 import 'antd/dist/antd.css';
-import './index.css';
 const RadioGroup = Radio.Group;
 
 const vuldbColumns = [{
