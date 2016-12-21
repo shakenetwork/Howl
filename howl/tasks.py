@@ -57,13 +57,13 @@ def masscan(target, port):
     results = os.popen(
         'masscan -p{0} {1} --rate=500 -oL {2} && cat {2}'.format(
             port, target, result_path)).read().split('\n')[1:-2]
-    os.remove(result_path)
+    os.system('rm {}'.format(result_path))
     for result in results:
         print(result)
         ip = result.split(" ")[3]
         ip_db.sadd(target, ip)
     target_path = result_path + '.txt'
-    os.remove(target_path)
+    os.system('rm {}'.format(target_path))
     with open(target_path, 'a+') as f:
         for i in ip_db.smembers(target):
             f.writelines(i + '\n')
