@@ -14,8 +14,7 @@ ip_db = redis.Redis(host='localhost', port=6379, db=2, decode_responses=True)
 
 @app.task
 def add2whatweb(target_path, port):
-    whatwebdb.incr('scanning')
-    logfile = 'tmp/{}_{}.json'.format(target_path, port)
+    logfile = '{}_{}.json'.format(target_path, port)
     if os.path.exists(logfile):
         os.system('rm {}'.format(logfile))
     os.system(
@@ -27,7 +26,7 @@ def add2whatweb(target_path, port):
             save2es.delay(target)
     whatwebdb.decr('scanning')
     if os.path.exists(logfile):
-        os.system('mv {} /tmp/'.format(logfile))
+        os.remove(logfile)
 
 
 @app.task
@@ -51,9 +50,9 @@ def save2es(target):
     except:
         pass
 
-
 @app.task
 def masscan(target, port):
+    whatwebdb.incr('scanning')
     result_path = '/tmp/tmp_{}'.format(target.replace('/', '_'))
     results = os.popen(
         'masscan -p{0} {1} --rate=500 -oL {2} && cat {2}'.format(
