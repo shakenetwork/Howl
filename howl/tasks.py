@@ -69,3 +69,5 @@ def masscan(target, port):
             f.writelines(i + '\n')
     if len(ip_db.smembers(target)):
         add2whatweb.delay(target_path, port)
+    else:
+        whatwebdb.decr('scanning')
