@@ -91,7 +91,7 @@ class HowlList(Resource):
             masscan.apply_async(
                 (target,
                  args.port, ),
-                countdown=int(whatwebdb.get('scanning')) * 600)
+                countdown=int(whatwebdb.get('scanning')) * 60)
             return {'code': 202}
 
 howlapi.add_resource(VuldbList, '/api/vuldb')
