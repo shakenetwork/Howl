@@ -53,7 +53,7 @@ def save2es(target):
 @app.task
 def masscan(target, port):
     whatwebdb.incr('scanning')
-    result_path = '/tmp/tmp_{}'.format(target.replace('/', '_'))
+    result_path = '/tmp/tmp_{}_{}'.format(target.replace('/', '_'),port)
     results = os.popen(
         'masscan -p{0} {1} --rate=500 -oL {2} && cat {2}'.format(
             port, target, result_path)).read().split('\n')[1:-2]
