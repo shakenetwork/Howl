@@ -65,7 +65,7 @@ def masscan(target, port):
     target_path = result_path + '.txt'
     os.system('rm {}'.format(target_path))
     with open(target_path, 'a+') as f:
-        for i in ip_db.smembers(target):
+        for i in ip_db.smembers('{}_{}'.format(target, port)):
             f.writelines(i + '\n')
     if len(ip_db.smembers('{}_{}'.format(target, port))):
         add2whatweb.delay(target_path, port)
