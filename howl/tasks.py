@@ -11,22 +11,23 @@ platforms.C_FORCE_ROOT = True
 app = Celery('tasks', broker='redis://localhost:6379/1')
 ip_db = redis.Redis(host='localhost', port=6379, db=2, decode_responses=True)
 
+def remove_tmp(filepath):
+    if os.path.exists(filepath):
+        os.remove(filepath)
 
 @app.task
-def add2whatweb(target_path, port):
-    logfile = '{}_{}.json'.format(target_path, port)
-    if os.path.exists(logfile):
-        os.system('rm {}'.format(logfile))
+def add2whatweb(open_target_path, port):
+    whatweb_logfile = '{}_{}.json'.format(open_target_path, port)
+    remove_tmp(whatweb_logfile)
     os.system(
         "whatweb --no-errors -t 255 -i {} --url-suffix=':{}' --log-json={}".
-        format(target_path, port, logfile))
-    with open(logfile, 'r') as logf:
+        format(open_target_path, port, whatweb_logfile))
+    with open(whatweb_logfile, 'r') as logf:
         lines = json.load(logf)
         for target in lines:
             save2es.delay(target)
     whatwebdb.decr('scanning')
-    if os.path.exists(logfile):
-        os.remove(logfile)
+    remove_tmp(whatweb_logfile)
 
 
 @app.task
@@ -53,21 +54,21 @@ def save2es(target):
 @app.task
 def masscan(target, port):
     whatwebdb.incr('scanning')
-    result_path = '/tmp/tmp_{}_{}'.format(target.replace('/', '_'),port)
+    masscan_result_path = '/tmp/tmp_{}_{}'.format(target.replace('/', '_'),port)
     results = os.popen(
         'masscan -p{0} {1} --rate=500 -oL {2} && cat {2}'.format(
-            port, target, result_path)).read().split('\n')[1:-2]
-    os.system('rm {}'.format(result_path))
+            port, target, masscan_result_path)).read().split('\n')[1:-2]
+    remove_tmp(masscan_result_path)
     for result in results:
         print(result)
         ip = result.split(" ")[3]
         ip_db.sadd('{}_{}'.format(target, port), ip)
-    target_path = result_path + '.txt'
-    os.system('rm {}'.format(target_path))
-    with open(target_path, 'a+') as f:
+    open_target_path = masscan_result_path + '.txt'
+    remove_tmp(open_target_path)
+    with open(open_target_path, 'a+') as f:
         for i in ip_db.smembers('{}_{}'.format(target, port)):
             f.writelines(i + '\n')
     if len(ip_db.smembers('{}_{}'.format(target, port))):
-        add2whatweb.delay(target_path, port)
+        add2whatweb.delay(open_target_path, port)
     else:
         whatwebdb.decr('scanning')
