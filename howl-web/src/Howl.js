@@ -55,7 +55,8 @@ const Result = React.createClass({
             columns: whatwebColumns,
             filter: '',
             url: this.props.apiurl,
-            api: this.props.apiurl.whatwebApi
+            api: this.props.apiurl.whatwebApi,
+            value: 2
         };
     },
 
@@ -120,8 +121,8 @@ const Result = React.createClass({
             <div style={{background: '#FFF', padding: '40px'}}>
                 <BackTop />
                 {this.state.filter === '' ? <Alert message={'查询语法参考:plugins.Title.string:"zabbix" 从标题中搜索zabbix'+this.state.filter} type="info" showIcon/> : <Alert message={'关键字：'+this.state.filter} type="success" showIcon/> }
-                <div style={{background: '#FFF', padding: '30px'}}>
-                    <Row align='middle' gutter={16}>
+                <div style={{background: '#FFF', padding: '10px'}}>
+                    <Row align='middle' gutter={10}>
                         <Col span={4}>
                             <RadioGroup defaultValue={2} onChange={this.onChange} value={this.state.value}>
                                 <Radio value={1}>漏洞库</Radio>
@@ -129,7 +130,7 @@ const Result = React.createClass({
                             </RadioGroup>
                         </Col>
                         <Col span={12}>
-                            <SearchInput placeholder='管理 '
+                            <SearchInput placeholder='plugins.Title.string:"zabbix"'
                                          onSearch={filter => {
                                              this.handleSearch(filter);
                                          } } style={{width: 400,marginRight: 30}}
