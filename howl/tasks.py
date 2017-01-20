@@ -25,7 +25,7 @@ def add2whatweb(open_target_path, port):
     with open(whatweb_logfile, 'r') as logf:
         lines = json.load(logf)
         for target in lines:
-            save2es.delay(target)
+            save2es(target)
     whatwebdb.decr('scanning')
     remove_tmp(whatweb_logfile)
 
@@ -69,6 +69,6 @@ def masscan(target, port):
         for i in ip_db.smembers('{}_{}'.format(target, port)):
             f.writelines(i + '\n')
     if len(ip_db.smembers('{}_{}'.format(target, port))):
-        add2whatweb.delay(open_target_path, port)
+        add2whatweb(open_target_path, port)
     else:
         whatwebdb.decr('scanning')
