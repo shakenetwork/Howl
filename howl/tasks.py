@@ -11,16 +11,18 @@ platforms.C_FORCE_ROOT = True
 app = Celery('tasks', broker='redis://localhost:6379/1')
 ip_db = redis.Redis(host='localhost', port=6379, db=2, decode_responses=True)
 
+
 def remove_tmp(filepath):
     if os.path.exists(filepath):
         os.remove(filepath)
+
 
 @app.task
 def add2whatweb(open_target_path, port):
     whatweb_logfile = '{}_{}.json'.format(open_target_path, port)
     remove_tmp(whatweb_logfile)
     os.system(
-        "whatweb --no-errors --wait 10 -t 255 -i {} --url-suffix=':{}' --log-json={}".
+        "whatweb -q --no-errors --wait=10 -t 255 -i {} --url-suffix=':{}' --log-json={}".
         format(open_target_path, port, whatweb_logfile))
     with open(whatweb_logfile, 'r') as logf:
         lines = json.load(logf)
@@ -51,10 +53,12 @@ def save2es(target):
     except:
         pass
 
+
 @app.task
 def masscan(target, port):
     whatwebdb.incr('scanning')
-    masscan_result_path = '/tmp/tmp_{}_{}'.format(target.replace('/', '_'),port)
+    masscan_result_path = '/tmp/tmp_{}_{}'.format(
+        target.replace('/', '_'), port)
     results = os.popen(
         'masscan -p{0} {1} --rate=500 -oL {2} && cat {2}'.format(
             port, target, masscan_result_path)).read().split('\n')[1:-2]
