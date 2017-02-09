@@ -20,7 +20,7 @@ def add2whatweb(open_target_path, port):
     whatweb_logfile = '{}_{}.json'.format(open_target_path, port)
     remove_tmp(whatweb_logfile)
     os.system(
-        "whatweb --no-errors -t 255 -i {} --url-suffix=':{}' --log-json={}".
+        "whatweb --no-errors --wait 10 -t 255 -i {} --url-suffix=':{}' --log-json={}".
         format(open_target_path, port, whatweb_logfile))
     with open(whatweb_logfile, 'r') as logf:
         lines = json.load(logf)
