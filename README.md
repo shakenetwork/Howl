@@ -37,7 +37,3 @@ $ cd howl
 $ celery -A tasks worker --loglevel=info
 $ python run.py 端口
 ```
-
-### 截图:
-
-![](http://obfxuk8r6.bkt.clouddn.com/howl_demo.png)
